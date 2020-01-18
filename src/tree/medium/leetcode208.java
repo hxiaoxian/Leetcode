@@ -1,37 +1,37 @@
 package tree.medium;
 
 /**
- * Created by Hxg
- * Date: 2019/5/2
- * Time: 15:00
- * Version 1.0
- * Description : LeetCode
+ * 实现一个 Trie (前缀树)，包含 insert, search, 和 startsWith 这三个操作。
+ * <p>
+ * 示例:
+ * <p>
+ * Trie trie = new Trie();
+ * <p>
+ * trie.insert("apple");
+ * trie.search("apple");   // 返回 true
+ * trie.search("app");     // 返回 false
+ * trie.startsWith("app"); // 返回 true
+ * trie.insert("app");
+ * trie.search("app");     // 返回 true
  */
 public class leetcode208 {
     class TrieNode {
-        boolean isWord;
-        private TrieNode[] child;
+        TrieNode[] child;
+        boolean isword;
 
-        TrieNode() {
-            isWord = false;
+        public TrieNode() {
             child = new TrieNode[26];
-        }
-
-        public TrieNode getChild(int i) {
-            if (i >= 26 || i < 0)
-                throw new IllegalArgumentException();
-            return child[i];
-        }
-
-        public void setChild(int i, TrieNode node) {
-            child[i] = node;
+            isword = false;
         }
     }
 
-    public class Trie {
+    class Trie {
 
-        private TrieNode root;
+        TrieNode root;
 
+        /**
+         * Initialize your data structure here.
+         */
         public Trie() {
             root = new TrieNode();
         }
@@ -40,53 +40,43 @@ public class leetcode208 {
          * Inserts a word into the trie.
          */
         public void insert(String word) {
-            TrieNode r = root;
-            if (r == null)
-                return;
+            TrieNode node = root;
             for (int i = 0; i < word.length(); i++) {
-                int id = word.charAt(i) - 'a';
-                if (r.getChild(id) == null) {
-                    r.setChild(id, new TrieNode());
+                char c = word.charAt(i);
+                if (node.child[c - 'a'] == null) {
+                    node.child[c - 'a'] = new TrieNode();
                 }
-                r = r.getChild(id);
-
+                node = node.child[c - 'a'];
             }
-            r.isWord = true;
+            node.isword = true;
         }
 
         /**
          * Returns if the word is in the trie.
          */
         public boolean search(String word) {
-            TrieNode r = root;
-            if (r == null)
-                return false;
+            TrieNode node = root;
             for (int i = 0; i < word.length(); i++) {
-                int id = word.charAt(i) - 'a';
-                if (r.getChild(id) == null) {
+                char c = word.charAt(i);
+                if (node.child[c - 'a'] == null)
                     return false;
-                }
-                r = r.getChild(id);
+                node = node.child[c - 'a'];
             }
-            return r.isWord;
+            return node.isword;
         }
 
         /**
          * Returns if there is any word in the trie that starts with the given prefix.
          */
         public boolean startsWith(String prefix) {
-            TrieNode r = root;
-            if (r == null)
-                return false;
+            TrieNode node = root;
             for (int i = 0; i < prefix.length(); i++) {
-                int id = prefix.charAt(i) - 'a';
-                if (r.getChild(id) == null) {
+                char c = prefix.charAt(i);
+                if (node.child[c - 'a'] == null)
                     return false;
-                }
-                r = r.getChild(id);
+                node = node.child[c - 'a'];
             }
-            return r != null;
+            return true;
         }
     }
-
 }

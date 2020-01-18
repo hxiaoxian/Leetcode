@@ -8,13 +8,49 @@ import java.util.List;
 import java.util.Queue;
 
 /**
- * Created by Hxg
- * Date: 2019/4/30
- * Time: 19:43
- * Version 1.0
- * Description : LeetCode
+ * 给定一个二叉树，返回其按层次遍历的节点值。 （即逐层地，从左到右访问所有节点）。
+ * <p>
+ * 例如:
+ * 给定二叉树: [3,9,20,null,null,15,7],
+ * <p>
+ * 3
+ * / \
+ * 9  20
+ * /  \
+ * 15   7
+ * 返回其层次遍历结果：
+ * <p>
+ * [
+ * [3],
+ * [9,20],
+ * [15,7]
+ * ]
  */
 public class leetcode102 {
+
+    // 大佬版 先序DFS
+    class Solution3 {
+        private List<List<Integer>> ret = new ArrayList<>();
+
+        public List<List<Integer>> levelOrder(TreeNode root) {
+            if (root == null)
+                return ret;
+            help(root, 0);
+            return ret;
+        }
+
+        private void help(TreeNode root, int level) {
+            if (level == ret.size()) {
+                ret.add(new ArrayList<>());
+            }
+            ret.get(level).add(root.val);
+            if (root.left != null)
+                help(root.left, level + 1);
+            if (root.right != null)
+                help(root.right, level + 1);
+        }
+    }
+
     //BFS
     class Solution {
         public List<List<Integer>> levelOrder(TreeNode root) {
@@ -69,26 +105,4 @@ public class leetcode102 {
         }
     }
 
-    // 大佬版DFS
-    class Solution3 {
-        private List<List<Integer>> ret = new ArrayList<>();
-
-        public List<List<Integer>> levelOrder(TreeNode root) {
-            if (root == null)
-                return ret;
-            helper(root, 0);
-            return ret;
-        }
-
-        private void helper(TreeNode root, int level) {
-            if (level == ret.size()) {
-                ret.add(new ArrayList<>());
-            }
-            ret.get(level).add(root.val);
-            if (root.left != null)
-                helper(root.left, level + 1);
-            if (root.right != null)
-                helper(root.right, level + 1);
-        }
-    }
 }

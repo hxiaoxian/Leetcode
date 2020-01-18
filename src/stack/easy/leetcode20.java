@@ -3,11 +3,35 @@ package stack.easy;
 import java.util.Stack;
 
 /**
- * Created by Hxg
- * Date: 2019/3/7
- * Time: 20:03
- * Version 1.0
- * Description : LeetCode
+ * 给定一个只包括 '('，')'，'{'，'}'，'['，']' 的字符串，判断字符串是否有效。
+ *
+ * 有效字符串需满足：
+ *
+ * 左括号必须用相同类型的右括号闭合。
+ * 左括号必须以正确的顺序闭合。
+ * 注意空字符串可被认为是有效字符串。
+ *
+ * 示例 1:
+ *
+ * 输入: "()"
+ * 输出: true
+ * 示例 2:
+ *
+ * 输入: "()[]{}"
+ * 输出: true
+ * 示例 3:
+ *
+ * 输入: "(]"
+ * 输出: false
+ * 示例 4:
+ *
+ * 输入: "([)]"
+ * 输出: false
+ * 示例 5:
+ *
+ * 输入: "{[]}"
+ * 输出: true
+ *
  */
 public class leetcode20 {
     //用栈匹配
@@ -34,22 +58,11 @@ public class leetcode20 {
         }
     }
 
-    //时间过长
-    class Solution2 {
-        public boolean isValid(String s) {
-            int length;
-            do {
-                length = s.length();
-                s = s.replace("()", "").replace("{}", "").replace("[]", "");
-            } while (length != s.length());
-            return s.length() == 0;
-        }
-    }
 
     //大佬解法
-    class Solution3 {
+    class Solution1 {
         public boolean IsValid(String s) {
-            Stack<Character> stack = new Stack<Character>();
+            Stack<Character> stack = new Stack<>();
             for (char c : s.toCharArray()) {
                 if (c == '(')
                     stack.push(')');
@@ -61,6 +74,31 @@ public class leetcode20 {
                     return false;
             }
             return stack.isEmpty();
+        }
+    }
+
+    class Solution2 {
+        public boolean isValid(String s) {
+            if (s.length() == 0)
+                return true;
+            Stack<Character> left = new Stack<>();
+            for (Character c : s.toCharArray()) {
+                if (c == '(' || c == '[' || c == '{')
+                    left.push(c);
+                else if (!left.empty() && leftOf(c) == left.peek())
+                    left.pop();
+                else
+                    return false;
+            }
+            return left.empty();
+        }
+
+        Character leftOf(Character c) {
+            if (c == '}')
+                return '{';
+            if (c == ')')
+                return '(';
+            return '[';
         }
     }
 }
